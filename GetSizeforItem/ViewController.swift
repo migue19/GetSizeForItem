@@ -35,7 +35,7 @@ class ViewController: UIViewController {
         }
     }
     private func getSizeForText(_ text: String, font: UIFont, marginTop: Double, marginBottom: Double) -> SizeView {
-        let width = widthForItem(text: text, font: font)
+        let width = widthForItem(text: text, font: font, marginLeft: 8, marginRight: 8)
         var height = text.height(withConstrainedWidth: width, font: font)
         height = marginTop + height + marginBottom
         return SizeView(width: width, height: height)
@@ -43,13 +43,13 @@ class ViewController: UIViewController {
     private func getWidthForText(_ text: String, font: UIFont) -> Double {
         return text.size(withAttributes: [NSAttributedString.Key.font: font]).width
     }
-    private func widthForItem(text: String, font: UIFont) -> Double {
+    private func widthForItem(text: String, font: UIFont, marginLeft: Double, marginRight: Double) -> Double {
         let maxWidth = self.view.bounds.width * 0.8
         let width = getWidthForText(text, font: font)
         if width > maxWidth {
             return maxWidth
         } else {
-            return 8 + width + 8
+            return marginLeft + width + marginRight
         }
     }
 }
