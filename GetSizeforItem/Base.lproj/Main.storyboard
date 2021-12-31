@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -13,11 +12,11 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="GetSizeforItem" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Fh-oW-1Wb">
-                                <rect key="frame" x="206" y="84" width="200" height="40"/>
+                                <rect key="frame" x="392" y="40" width="200" height="40"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="HGa-ZY-L5Y">
                                         <rect key="frame" x="0.0" y="0.0" width="200" height="40"/>
@@ -47,7 +46,7 @@
                     </view>
                     <connections>
                         <outlet property="contentView" destination="3Fh-oW-1Wb" id="GiO-ar-B8p"/>
-                        <outlet property="heightContraint" destination="aYP-DK-DDD" id="8yu-n6-hGt"/>
+                        <outlet property="heightConstraint" destination="aYP-DK-DDD" id="8yu-n6-hGt"/>
                         <outlet property="textView" destination="HGa-ZY-L5Y" id="Iye-0E-rtj"/>
                         <outlet property="widthConstraint" destination="0dM-nB-5YW" id="zIg-Q1-ui6"/>
                     </connections>

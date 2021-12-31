@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UIViewController {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var contentView: UIView!
-    @IBOutlet weak var heightContraint: NSLayoutConstraint!
+    @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     @IBOutlet weak var widthConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
@@ -20,100 +20,55 @@ class ViewController: UIViewController {
         //message = "Hola como estas migue un saludo porfa por que"
         //message = "Hola como estas migue saludo porfavor sd"
         //message = "Hola como estas migue saludos de tu mejor amigo"
-        //message = "Hola como estas migue saludos delta"
-        message = "i"
+        //message = "Hola como estas migue saludos del"
+        //message = "i"
         textView.text = message
         //createTextView()
-        getWith()
+        getSize()
     }
-    
-    private func getWith() {
-        let font = textView.font ?? UIFont.systemFont(ofSize: 12)
-        let pointSize = textView.font?.pointSize ?? 0.0
-        let size = getSizeText(text: textView.text, pointSize: pointSize, font: font)
-        widthConstraint.constant = size.width
-        heightContraint.constant = size.height
-        contentView.layoutIfNeeded()
-    }
-    
-    private func returnHeightPoint(point: CGFloat) -> Double {
-        switch point {
-        case 12:
-            return 9.8
-        case 13:
-            return 10.2
-        case 14:
-            return 11.2
-        case 16:
-            return 13
-        default:
-            return point - 2.6
+    private func getSize() {
+        if let font = textView.font {
+            let size = getSizeForText(textView.text, font: font, marginTop: 8, marginBottom: 8)
+            widthConstraint.constant = size.width
+            heightConstraint.constant = size.height
+            contentView.layoutIfNeeded()
         }
     }
-    private func returnWidthPoint(point: CGFloat) -> Double {
-        switch point {
-        case 12:
-            return 9.8
-        case 13:
-            return 10.2
-        case 14:
-            return 11.2
-        case 16:
-            return 10.9
-        default:
-            return point - 2.6
-        }
+    private func getSizeForText(_ text: String, font: UIFont, marginTop: Double, marginBottom: Double) -> SizeView {
+        let width = widthForItem(text: text, font: font)
+        var height = text.height(withConstrainedWidth: width, font: font)
+        height = marginTop + height + marginBottom
+        return SizeView(width: width, height: height)
     }
-    
-    private func returnForCharacter(text: String, sizeDefault: Double) -> Double {
-        var tam = 0.0
-        for t in text {
-            switch t {
-            case "i", "l":
-                tam += sizeDefault * 0.9
-            case " ":
-                tam += sizeDefault * 1
-            case "H", "m", "o", "a", "c":
-                tam += sizeDefault
-            default:
-                tam += sizeDefault
-            }
-        }
-        return tam
+    private func getWidthForText(_ text: String, font: UIFont) -> Double {
+        return text.size(withAttributes: [NSAttributedString.Key.font: font]).width
     }
-    
-    
-    private func widthforItem(tamCharacter: Double, text: String) -> Double {
+    private func widthForItem(text: String, font: UIFont) -> Double {
         let maxWidth = self.view.bounds.width * 0.8
-        let width = returnForCharacter(text: text, sizeDefault: tamCharacter)
-        
+        let width = getWidthForText(text, font: font)
         if width > maxWidth {
             return maxWidth
         } else {
-            return width
+            return 8 + width + 8
         }
-    }
-    
-    private func getSizeText(text: String, pointSize: CGFloat, font: UIFont) -> SizeView {
-        let heightPoint = returnHeightPoint(point: font.pointSize)
-        let widthPoint = returnWidthPoint(point: font.pointSize)
-        var maxWidth = widthforItem(tamCharacter: widthPoint, text: text)
-        maxWidth = 8 + maxWidth + 8
-        var numberOfRow = returnForCharacter(text: text, sizeDefault: widthPoint) / maxWidth
-        let decimalPart = numberOfRow.truncatingRemainder(dividingBy: 1)
-        if decimalPart > 0.35 {
-            numberOfRow.round(.awayFromZero)
-        } else {
-            numberOfRow.round()
-        }
-        let topMargin = heightPoint
-        let bottomMargin = heightPoint
-        var heigthforRow = heightPoint * numberOfRow
-        heigthforRow = topMargin + heigthforRow + bottomMargin
-        return SizeView(width: maxWidth, height: heigthforRow)
     }
 }
 struct SizeView {
     var width: Double
     var height: Double
+}
+extension String {
+    func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
+    
+        return ceil(boundingBox.height)
+    }
+
+    func width(withConstrainedHeight height: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: .greatestFiniteMagnitude, height: height)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
+
+        return ceil(boundingBox.width)
+    }
 }
